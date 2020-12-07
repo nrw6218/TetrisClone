@@ -170,22 +170,58 @@ public class TetrisBlock : MonoBehaviour
     }
 
     /// <summary>
-    /// Validates that a rotation is possible and if so
-    /// rotates the block by 90 degrees
+    /// Attempts rotation and makes necessary adjustments to remain inside
+    /// game board. Reverts changes if not possible
     /// </summary>
     void Rotate()
     {
         transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), 90);
+        List<Vector3> adjustmentsMade = new List<Vector3>();
 
         foreach (Transform child in transform)
         {
             int roundedX = Mathf.RoundToInt(child.transform.position.x);
             int roundedY = Mathf.RoundToInt(child.transform.position.y);
+            int adjustmentX = 0;
+            int adjustmentY = 0;
 
-            if (roundedX < 0 || roundedX >= width || roundedY < 0 || roundedY >= height)
+            // Push the block off of the edges of the game board
+            if (roundedX <= 0)
             {
+                adjustmentX = Mathf.Abs(roundedX);
+            }
+            if (roundedX >= width)
+            {
+                adjustmentX = (width - 1) - roundedX;
+            }
+            if (roundedY < 0)
+            {
+                adjustmentY = Mathf.Abs(roundedY);
+            }
+            if (roundedY >= height)
+            {
+                adjustmentY = (height - 1) - roundedY;
+            }
+
+            Vector3 adjustment = new Vector3(adjustmentX, adjustmentY, 0);
+
+            // Attempt adjustments
+            if (adjustment != Vector3.zero)
+            {
+                adjustmentsMade.Add(adjustment);
+                transform.position += adjustment;
+            }
+        }
+
+        // If adjustment causes conflicts, revert
+        if (!ValidateMove(Vector3.zero))
+        {
+            foreach (Vector3 adjustment in adjustmentsMade)
+            {
+                transform.position -= adjustment;
                 transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
             }
+
         }
     }
 }
