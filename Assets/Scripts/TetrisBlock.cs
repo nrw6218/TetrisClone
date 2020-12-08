@@ -9,6 +9,7 @@ public class TetrisBlock : MonoBehaviour
     public Vector3 rotationPoint;
     private float lastTimestamp;
     private float fallTime = 0.8f;
+    public bool isHeld = false;
     public static int width = 10;
     public static int height = 20;
     public static Transform[,] grid = new Transform[width, height];
@@ -23,44 +24,47 @@ public class TetrisBlock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Player Input
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (!isHeld)
         {
-            Vector3 move = new Vector3(-1, 0, 0);
-            if (ValidateMove(move))
+            // Player Input
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                transform.position += move;
+                Vector3 move = new Vector3(-1, 0, 0);
+                if (ValidateMove(move))
+                {
+                    transform.position += move;
+                }
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            Vector3 move = new Vector3(1, 0, 0);
-            if (ValidateMove(move))
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                transform.position += move;
+                Vector3 move = new Vector3(1, 0, 0);
+                if (ValidateMove(move))
+                {
+                    transform.position += move;
+                }
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            Rotate();
-        }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                Rotate();
+            }
 
-        // Block Movement
-        if (Time.time - lastTimestamp > ((Input.GetKey(KeyCode.DownArrow)) ? fallTime / 10 : fallTime))
-        {
-            Vector3 move = new Vector3(0, -1, 0);
-            if (ValidateMove(move))
+            // Block Movement
+            if (Time.time - lastTimestamp > ((Input.GetKey(KeyCode.DownArrow)) ? fallTime / 10 : fallTime))
             {
-                transform.position += move;
+                Vector3 move = new Vector3(0, -1, 0);
+                if (ValidateMove(move))
+                {
+                    transform.position += move;
+                }
+                else
+                {
+                    this.enabled = false;
+                    AddToGrid();
+                    CheckLines();
+                    FindObjectOfType<SpawnBlocks>().Spawn();
+                }
+                lastTimestamp = Time.time;
             }
-            else
-            {
-                this.enabled = false;
-                AddToGrid();
-                CheckLines();
-                FindObjectOfType<SpawnBlocks>().Spawn();
-            }
-            lastTimestamp = Time.time;
         }
     }
 

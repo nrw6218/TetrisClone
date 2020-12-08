@@ -325,6 +325,7 @@ MonoBehaviour:
   - {fileID: 2490842333072233508, guid: ee33f4e23ea9b7e4b90b4a792460bf13, type: 3}
   - {fileID: 7990112110929865912, guid: a3e5ee596ec05324fb2d761ec97a887d, type: 3}
   - {fileID: 629908153439233008, guid: deb1c73ebe03c0c42b62a670ac8009e4, type: 3}
+  heldPosition: {x: -5, y: 18, z: 0}
 --- !u!4 &1442065268
 Transform:
   m_ObjectHideFlags: 0
