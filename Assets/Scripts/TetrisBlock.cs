@@ -10,6 +10,7 @@ public class TetrisBlock : MonoBehaviour
     private float lastTimestamp;
     private float fallTime = 0.8f;
     public bool isHeld = false;
+    private bool autoPlaced = false;
     public static int width = 10;
     public static int height = 20;
     public static Transform[,] grid = new Transform[width, height];
@@ -47,9 +48,13 @@ public class TetrisBlock : MonoBehaviour
             {
                 Rotate();
             }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                AutoPlace();
+            }
 
             // Block Movement
-            if (Time.time - lastTimestamp > ((Input.GetKey(KeyCode.DownArrow)) ? fallTime / 10 : fallTime))
+            if ((Time.time - lastTimestamp > ((Input.GetKey(KeyCode.DownArrow)) ? fallTime / 10 : fallTime)))
             {
                 Vector3 move = new Vector3(0, -1, 0);
                 if (ValidateMove(move))
@@ -62,9 +67,22 @@ public class TetrisBlock : MonoBehaviour
                     AddToGrid();
                     CheckLines();
                     FindObjectOfType<SpawnBlocks>().Spawn();
+                    Debug.Log("SPAWN");
                 }
                 lastTimestamp = Time.time;
             }
+        }
+    }
+
+    /// <summary>
+    /// Moves the block to its final position with no time difference
+    /// </summary>
+    void AutoPlace()
+    {
+        Vector3 move = new Vector3(0, -1, 0);
+        while (ValidateMove(move))
+        {
+            transform.position += move;
         }
     }
 
@@ -83,6 +101,9 @@ public class TetrisBlock : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks for completed lines
+    /// </summary>
     void CheckLines()
     {
         for (int row = height - 1; row >= 0; row--)
@@ -223,9 +244,8 @@ public class TetrisBlock : MonoBehaviour
             foreach (Vector3 adjustment in adjustmentsMade)
             {
                 transform.position -= adjustment;
-                transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
             }
-
+            transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
         }
     }
 }

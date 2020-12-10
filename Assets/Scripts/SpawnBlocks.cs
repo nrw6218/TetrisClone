@@ -73,7 +73,6 @@ public class SpawnBlocks : MonoBehaviour
             GameObject temp = Instantiate(blocks[Random.Range(0, blocks.Length)], new Vector3(15, 20 - (i * 2.5f)), Quaternion.identity);
             temp.GetComponent<TetrisBlock>().isHeld = true;
             blockQueue.Enqueue(temp);
-            Debug.Log("LOOP");
         }
         Spawn();
     }
