@@ -10,7 +10,6 @@ public class TetrisBlock : MonoBehaviour
     private float lastTimestamp;
     private float fallTime = 0.8f;
     public bool isHeld = false;
-    private bool autoPlaced = false;
     public static int width = 10;
     public static int height = 20;
     public static Transform[,] grid = new Transform[width, height];
@@ -48,13 +47,13 @@ public class TetrisBlock : MonoBehaviour
             {
                 Rotate();
             }
-            else if (Input.GetKeyDown(KeyCode.Space))
+
+            // Block movement
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 AutoPlace();
             }
-
-            // Block Movement
-            if ((Time.time - lastTimestamp > ((Input.GetKey(KeyCode.DownArrow)) ? fallTime / 10 : fallTime)))
+            else if ((Time.time - lastTimestamp > ((Input.GetKey(KeyCode.DownArrow)) ? fallTime / 10 : fallTime)))
             {
                 Vector3 move = new Vector3(0, -1, 0);
                 if (ValidateMove(move))
