@@ -11,14 +11,17 @@ public class TetrisBlock : MonoBehaviour
     private float fallTime = 0.8f;
     public bool isHeld = false;
     public static int width = 10;
-    public static int height = 20;
+    public static int height = 22;
     public static Transform[,] grid = new Transform[width, height];
+    private ScoreBoard scoreBoard;
+    private int currentLevel;
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
-
+        scoreBoard = FindObjectOfType<ScoreBoard>();
+        currentLevel = scoreBoard.Level;
     }
 
     // Update is called once per frame
@@ -53,7 +56,7 @@ public class TetrisBlock : MonoBehaviour
             {
                 AutoPlace();
             }
-            else if ((Time.time - lastTimestamp > ((Input.GetKey(KeyCode.DownArrow)) ? fallTime / 10 : fallTime)))
+            else if ((Time.time - lastTimestamp) > ((Input.GetKey(KeyCode.DownArrow)) ? fallTime / 10 : (fallTime - ((currentLevel - 1) * 0.05))))
             {
                 Vector3 move = new Vector3(0, -1, 0);
                 if (ValidateMove(move))
@@ -63,10 +66,14 @@ public class TetrisBlock : MonoBehaviour
                 else
                 {
                     this.enabled = false;
-                    AddToGrid();
-                    CheckLines();
-                    FindObjectOfType<SpawnBlocks>().Spawn();
-                    Debug.Log("SPAWN");
+                    if (AddToGrid())
+                    {
+                        CheckLines();
+                        FindObjectOfType<SpawnBlocks>().Spawn();
+                    } else
+                    {
+                        Debug.Log("GAME OVER");
+                    }
                 }
                 lastTimestamp = Time.time;
             }
@@ -89,15 +96,22 @@ public class TetrisBlock : MonoBehaviour
     /// Adds child transforms of block to grid 2d array
     /// so blocks don't overlap at bottom
     /// </summary>
-    void AddToGrid()
+    /// <returns>True if success, false if outside of board bounds</returns>
+    bool AddToGrid()
     {
         foreach (Transform child in transform)
         {
             int roundedX = Mathf.RoundToInt(child.transform.position.x);
             int roundedY = Mathf.RoundToInt(child.transform.position.y);
 
+            if (roundedY >= (height - 2)) {
+                return false;
+            }
+
             grid[roundedX, roundedY] = child;
         }
+
+        return true;
     }
 
     /// <summary>
@@ -105,13 +119,16 @@ public class TetrisBlock : MonoBehaviour
     /// </summary>
     void CheckLines()
     {
+        int linesCleared = 0;
         for (int row = height - 1; row >= 0; row--)
         {
             if (HasLine(row))
             {
+                linesCleared++;
                 DeleteLine(row);
             }
         }
+        currentLevel = scoreBoard.ClearLines(linesCleared);
     }
 
     /// <summary>
