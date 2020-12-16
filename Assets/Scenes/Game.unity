@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10.93
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -479,6 +479,7 @@ GameObject:
   - component: {fileID: 1442065268}
   - component: {fileID: 1442065267}
   - component: {fileID: 1442065269}
+  - component: {fileID: 1442065270}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -506,6 +507,7 @@ MonoBehaviour:
   - {fileID: 2490842333072233508, guid: ee33f4e23ea9b7e4b90b4a792460bf13, type: 3}
   - {fileID: 7990112110929865912, guid: a3e5ee596ec05324fb2d761ec97a887d, type: 3}
   - {fileID: 629908153439233008, guid: deb1c73ebe03c0c42b62a670ac8009e4, type: 3}
+  scoreBoard: {fileID: 0}
   heldPosition: {x: -5, y: 18, z: 0}
 --- !u!4 &1442065268
 Transform:
@@ -541,6 +543,36 @@ MonoBehaviour:
   startLevel: 1
   level: 0
   linesPerLevel: 0
+--- !u!114 &1442065270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442065266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 78f20ba44bcabf2478689c2c2f23b76b, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 1999416331}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 519420031}
 --- !u!1 &1554835692
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,16 +758,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1999416330}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 78f20ba44bcabf2478689c2c2f23b76b, type: 3}
+  m_PointAction: {fileID: 0}
+  m_MoveAction: {fileID: 0}
+  m_SubmitAction: {fileID: 0}
+  m_CancelAction: {fileID: 0}
+  m_LeftClickAction: {fileID: 0}
+  m_MiddleClickAction: {fileID: 0}
+  m_RightClickAction: {fileID: 0}
+  m_ScrollWheelAction: {fileID: 0}
+  m_TrackedDevicePositionAction: {fileID: 0}
+  m_TrackedDeviceOrientationAction: {fileID: 0}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
 --- !u!114 &1999416332
 MonoBehaviour:
   m_ObjectHideFlags: 0

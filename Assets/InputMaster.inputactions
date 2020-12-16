@@ -1,0 +1,431 @@
+{
+    "name": "InputMaster",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "f4b136b8-d004-4f0e-880b-c95eed6bcb2c",
+            "actions": [
+                {
+                    "name": "Move Left",
+                    "type": "Button",
+                    "id": "626be4e3-e223-4663-89b8-b46249395732",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Move Right",
+                    "type": "Button",
+                    "id": "e53132b0-7371-4670-ad6e-52ab58e7652c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Rotate Right",
+                    "type": "Button",
+                    "id": "7630e486-1355-4d66-b0ed-5d731967bca6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Rotate Left",
+                    "type": "Button",
+                    "id": "866f9acb-5974-4e99-9f2b-b447a497022c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Auto Drop",
+                    "type": "Button",
+                    "id": "f3f40f4a-c19e-4bb0-8a53-0ee9fe2d2574",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Fast Drop",
+                    "type": "Button",
+                    "id": "6181c695-773e-43e6-afb0-ea6975b30ecb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
+                },
+                {
+                    "name": "Hold Block",
+                    "type": "Button",
+                    "id": "cdf2472a-67ac-4876-88b8-932a75c97aef",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "466e0f8e-a3a5-4f6a-831d-f64f7ccc9068",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "9913e208-4dea-47d0-9554-67f91068f4d2",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Move Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6443ac3e-66cf-4aef-ad03-5779da4716f0",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Move Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97c29bee-62fa-4171-8fdf-97bc224b02f5",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard Control Scheme",
+                    "action": "Move Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "38935b19-bf32-42a6-a121-0f7e3c386d7c",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard Control Scheme",
+                    "action": "Move Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3668eea1-ad04-4c58-88e9-407014903b4e",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Move Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "db8f7b61-64e3-4599-a04b-d37e15e044b4",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Move Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fb360f92-fe3d-4d63-bf96-7be1ae4dbee9",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard Control Scheme",
+                    "action": "Move Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c04426f8-3db8-4238-83a5-477c4f7e45ac",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard Control Scheme",
+                    "action": "Move Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3c54d371-ef93-4592-bde5-afc2b22451ad",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Rotate Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "87e1ab71-e6a3-40f8-be32-d7c4e83bd689",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Rotate Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e2e015eb-3a7a-45c5-b308-cc78a1f6bdd1",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Rotate Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4a51576-3751-45f6-bbb1-29f355d1d9eb",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard Control Scheme",
+                    "action": "Rotate Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9dfa1fb2-6d11-4662-a5ae-acc99c5b4b2f",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard Control Scheme",
+                    "action": "Rotate Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1ad82cdb-ba46-419f-99b6-231d1cfc4709",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Rotate Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ed3acc2d-ad63-4c51-a6de-f2a5041eb9ba",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Rotate Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ed93cc09-4d70-4bbc-ab63-e2144fbad487",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Rotate Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bff50072-ddc0-4733-a5b6-e9e80501ded5",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard Control Scheme",
+                    "action": "Rotate Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "31dcf60d-e588-4132-8782-55b2cb193e31",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Auto Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aa94a6e6-9bb5-469f-928f-ae9a45eecafd",
+                    "path": "<Gamepad>/leftStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Auto Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d2678957-6aad-43b1-a63c-b539eb4e9fbe",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard Control Scheme",
+                    "action": "Auto Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f99ea06b-6527-4e3a-828c-1cac94e241cf",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard Control Scheme",
+                    "action": "Auto Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "81805ba8-0cc5-416e-a8f8-6241fcec2b24",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Fast Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b5885038-1840-4fb7-bcda-8a6dfbcd0740",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Fast Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "41dfbb25-881a-4f2a-83f0-78c2136119c5",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard Control Scheme",
+                    "action": "Fast Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e37a4e1-fd4e-4d3f-b4c3-2095dcdc44d4",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard Control Scheme",
+                    "action": "Fast Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7d8d2863-4ed9-4b53-b79d-55b0fc3dba9d",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Hold Block",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1e8bd6b7-4b29-4f58-a5f7-1925b2de5618",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Control Scheme",
+                    "action": "Hold Block",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4895ab3c-b429-4282-a69f-7c27d3da5872",
+                    "path": "<Keyboard>/rightShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard Control Scheme",
+                    "action": "Hold Block",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "743c6e5f-a363-44d7-ae4b-28415f8baa48",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0780b55c-4096-4f56-8b00-ddaf95af62b9",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Xbox Control Scheme",
+            "bindingGroup": "Xbox Control Scheme",
+            "devices": [
+                {
+                    "devicePath": "<XInputController>",
+                    "isOptional": true,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "Keyboard Control Scheme",
+            "bindingGroup": "Keyboard Control Scheme",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": true,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

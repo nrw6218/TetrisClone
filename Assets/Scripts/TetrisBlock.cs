@@ -2,19 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Direction
+{
+    Left,
+    Right
+}
+
 public class TetrisBlock : MonoBehaviour
 {
 
     #region fields
     public Vector3 rotationPoint;
     private float lastTimestamp;
-    private float fallTime = 0.8f;
     public bool isHeld = false;
+    public float fallTime;
     public static int width = 10;
     public static int height = 22;
     public static Transform[,] grid = new Transform[width, height];
     private ScoreBoard scoreBoard;
     private int currentLevel;
+    #endregion
+
+    #region properties
+    public float FallTime
+    {
+        get { return fallTime; }
+        set { fallTime = value; }
+    }
     #endregion
 
     // Start is called before the first frame update
@@ -29,61 +43,43 @@ public class TetrisBlock : MonoBehaviour
     {
         if (!isHeld)
         {
-            // Player Input
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                Vector3 move = new Vector3(-1, 0, 0);
-                if (ValidateMove(move))
-                {
-                    transform.position += move;
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                Vector3 move = new Vector3(1, 0, 0);
-                if (ValidateMove(move))
-                {
-                    transform.position += move;
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                Rotate();
-            }
+            Fall();
+        }
+    }
 
-            // Block movement
-            if (Input.GetKeyDown(KeyCode.Space))
+    /// <summary>
+    /// Makes the block fall
+    /// </summary>
+    void Fall()
+    {
+        if (Time.time - lastTimestamp > fallTime)
+        {
+            Vector3 move = new Vector3(0, -1, 0);
+            if (ValidateMove(move))
             {
-                AutoPlace();
+                transform.position += move;
             }
-            else if ((Time.time - lastTimestamp) > ((Input.GetKey(KeyCode.DownArrow)) ? fallTime / 10 : (fallTime - ((currentLevel - 1) * 0.05))))
+            else
             {
-                Vector3 move = new Vector3(0, -1, 0);
-                if (ValidateMove(move))
+                this.enabled = false;
+                if (AddToGrid())
                 {
-                    transform.position += move;
+                    CheckLines();
+                    FindObjectOfType<SpawnBlocks>().Spawn();
                 }
                 else
                 {
-                    this.enabled = false;
-                    if (AddToGrid())
-                    {
-                        CheckLines();
-                        FindObjectOfType<SpawnBlocks>().Spawn();
-                    } else
-                    {
-                        Debug.Log("GAME OVER");
-                    }
+                    Debug.Log("GAME OVER");
                 }
-                lastTimestamp = Time.time;
             }
+            lastTimestamp = Time.time;
         }
     }
 
     /// <summary>
     /// Moves the block to its final position with no time difference
     /// </summary>
-    void AutoPlace()
+    public void AutoPlace()
     {
         Vector3 move = new Vector3(0, -1, 0);
         while (ValidateMove(move))
@@ -104,7 +100,8 @@ public class TetrisBlock : MonoBehaviour
             int roundedX = Mathf.RoundToInt(child.transform.position.x);
             int roundedY = Mathf.RoundToInt(child.transform.position.y);
 
-            if (roundedY >= (height - 2)) {
+            if (roundedY >= (height - 2))
+            {
                 return false;
             }
 
@@ -185,38 +182,39 @@ public class TetrisBlock : MonoBehaviour
     }
 
     /// <summary>
-    /// Takes a vector movement and returns true if the movement
-    /// is valid and would keep the block within bounds
+    /// Validates and moves the block in the desired direction
     /// </summary>
-    /// <param name="move">The vector movement</param>
-    /// <returns>True if the movement is valid</returns>
-    bool ValidateMove(Vector3 move)
+    /// <param name="direction">The direction to move</param>
+    public void Move(Direction direction)
     {
-        foreach (Transform child in transform)
-        {
-            int roundedX = Mathf.RoundToInt(child.transform.position.x + move.x);
-            int roundedY = Mathf.RoundToInt(child.transform.position.y + move.y);
+        Vector3 move;
 
-            if (roundedX < 0 || roundedX >= width || roundedY < 0 || roundedY >= height)
-            {
-                return false;
-            }
-            else if (grid[roundedX, roundedY] != null)
-            {
-                return false;
-            }
+        if (direction == Direction.Left)
+        {
+            move = new Vector3(-1, 0, 0);
+        }
+        else
+        {
+            move = new Vector3(1, 0, 0);
         }
 
-        return true;
+        if (ValidateMove(move))
+        {
+            transform.position += move;
+        }
     }
 
     /// <summary>
-    /// Attempts rotation and makes necessary adjustments to remain inside
-    /// game board. Reverts changes if not possible
+    /// Attempts and validates a rotation
+    /// of the block in the given direciton
     /// </summary>
-    void Rotate()
+    /// <param name="direction">The direction to rotate</param>
+    public void Rotate(Direction direction)
     {
-        transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), 90);
+        float angle = 90;
+        if (direction == Direction.Right) angle *= -1;
+
+        transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle);
         List<Vector3> adjustmentsMade = new List<Vector3>();
 
         foreach (Transform child in transform)
@@ -261,7 +259,33 @@ public class TetrisBlock : MonoBehaviour
             {
                 transform.position -= adjustment;
             }
-            transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
+            transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle * -1f);
         }
+    }
+
+    /// <summary>
+    /// Takes a vector movement and returns true if the movement
+    /// is valid and would keep the block within bounds
+    /// </summary>
+    /// <param name="move">The vector movement</param>
+    /// <returns>True if the movement is valid</returns>
+    bool ValidateMove(Vector3 move)
+    {
+        foreach (Transform child in transform)
+        {
+            int roundedX = Mathf.RoundToInt(child.transform.position.x + move.x);
+            int roundedY = Mathf.RoundToInt(child.transform.position.y + move.y);
+
+            if (roundedX < 0 || roundedX >= width || roundedY < 0 || roundedY >= height)
+            {
+                return false;
+            }
+            else if (grid[roundedX, roundedY] != null)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
