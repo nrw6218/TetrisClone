@@ -16,6 +16,8 @@ public class SpawnBlocks : MonoBehaviour
     private bool canHold = true;
     private float fallTime = 0.8f;
     private float adjustedFallTime;
+    public GameObject pauseCanvas;
+    public bool gamePaused;
     #endregion
 
     // Start is called before the first frame update
@@ -120,6 +122,25 @@ public class SpawnBlocks : MonoBehaviour
             adjustedFallTime = (fallTime - ((scoreBoard.Level - 1f) * 0.05f));
         }
         currentTetris.FallTime = adjustedFallTime;
+    }
+
+    /// <summary>
+    /// Toggles pause state of game
+    /// </summary>
+    public void OnPause()
+    {
+        if (gamePaused)
+        {
+            pauseCanvas.SetActive(false);
+            Time.timeScale = 1f;
+            gamePaused = false;
+        }
+        else
+        {
+            pauseCanvas.SetActive(true);
+            Time.timeScale = 0f;
+            gamePaused = true;
+        }
     }
 
     /// <summary>
