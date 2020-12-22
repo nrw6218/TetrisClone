@@ -14,6 +14,7 @@ public class TetrisBlock : MonoBehaviour
 
     #region fields
     public Vector3 rotationPoint;
+    public GameObject ghostPrefab;
     private float lastTimestamp;
     private bool isHeld = false;
     public float fallTime;
@@ -39,10 +40,7 @@ public class TetrisBlock : MonoBehaviour
             isHeld = value;
             if (!isHeld)
             {
-                ghostBlock = Instantiate(gameObject);
-                // Color tempColor = ghostBlock.GetComponent<Renderer>().material.color;
-                // tempColor.a = 0.4f;
-                // ghostBlock.GetComponent<Renderer>().material.color = tempColor;
+                ghostBlock = Instantiate(ghostPrefab);
                 ghostBlock.transform.position = transform.position;
                 UpdateGhost();
                 ghostBlock.GetComponent<TetrisBlock>().IsHeld = true;

@@ -7,9 +7,11 @@ public class SpawnBlocks : MonoBehaviour
 {
     #region fields
     public GameObject[] blocks;
+    public GameObject[] ghostBlocks;
     public ScoreBoard scoreBoard;
     public Vector3 heldPosition;
     private Queue<GameObject> blockQueue = new Queue<GameObject>();
+    private Queue<GameObject> ghostQueue = new Queue<GameObject>();
     private GameObject currentBlock = null;
     private TetrisBlock currentTetris = null;
     private GameObject heldBlock = null;
@@ -151,12 +153,15 @@ public class SpawnBlocks : MonoBehaviour
     {
         currentBlock = blockQueue.Dequeue();
         currentTetris = currentBlock.GetComponent<TetrisBlock>();
+        currentTetris.ghostPrefab = ghostQueue.Dequeue();
         currentBlock.transform.position = transform.position;
         currentTetris.IsHeld = false;
         currentTetris.FallTime = adjustedFallTime;
-        GameObject temp = Instantiate(blocks[Random.Range(0, blocks.Length)], transform.position, Quaternion.identity);
+        int index = Random.Range(0, blocks.Length);
+        GameObject temp = Instantiate(blocks[index], transform.position, Quaternion.identity);
         temp.GetComponent<TetrisBlock>().IsHeld = true;
         blockQueue.Enqueue(temp);
+        ghostQueue.Enqueue(ghostBlocks[index]);
         ShiftQueue();
         canHold = true;
     }
@@ -169,9 +174,11 @@ public class SpawnBlocks : MonoBehaviour
         adjustedFallTime = (fallTime - ((scoreBoard.Level - 1f) * 0.05f));
         for (int i = 0; i < 7; i++)
         {
-            GameObject temp = Instantiate(blocks[Random.Range(0, blocks.Length)], new Vector3(15, 20 - (i * 2.5f)), Quaternion.identity);
+            int index = Random.Range(0, blocks.Length);
+            GameObject temp = Instantiate(blocks[index], new Vector3(15, 20 - (i * 2.5f)), Quaternion.identity);
             temp.GetComponent<TetrisBlock>().IsHeld = true;
             blockQueue.Enqueue(temp);
+            ghostQueue.Enqueue(ghostBlocks[index]);
         }
         Spawn();
     }
