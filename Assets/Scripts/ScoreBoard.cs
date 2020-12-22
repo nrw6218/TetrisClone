@@ -49,8 +49,9 @@ public class ScoreBoard : MonoBehaviour
     /// and updates the GUI
     /// </summary>
     /// <param name="lines">Number of lines cleared</param>
+    /// <param name="perfectClear">Whether or not the player got a perfect clear</param>
     /// <returns>The current game level</returns>
-    public int ClearLines(int lines)
+    public int ClearLines(int lines, bool perfectClear)
     {
         // Lines
         linesCleared += lines;
@@ -60,16 +61,16 @@ public class ScoreBoard : MonoBehaviour
         switch (lines)
         {
             case 1:
-                score += level * 100;
+                score += level * (perfectClear ? 100 : 800);
                 break;
             case 2:
-                score += level * 300;
+                score += level * (perfectClear ? 300 : 1200);
                 break;
             case 3:
-                score += level * 500;
+                score += level * (perfectClear ? 500 : 1800);
                 break;
             case 4:
-                score += level * 800;
+                score += level * (perfectClear ? 800: 2000);
                 break;
             default:
                 break;

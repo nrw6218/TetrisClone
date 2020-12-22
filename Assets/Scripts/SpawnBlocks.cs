@@ -88,18 +88,18 @@ public class SpawnBlocks : MonoBehaviour
                 heldBlock = currentBlock;
                 heldBlock.transform.position = heldPosition;
                 heldBlock.transform.rotation = Quaternion.identity;
-                heldBlock.GetComponent<TetrisBlock>().isHeld = true;
+                heldBlock.GetComponent<TetrisBlock>().IsHeld = true;
                 currentBlock = temp;
                 currentTetris = currentBlock.GetComponent<TetrisBlock>();
                 currentBlock.transform.position = transform.position;
-                currentTetris.isHeld = false;
+                currentTetris.IsHeld = false;
             }
             else
             {
                 heldBlock = currentBlock;
                 heldBlock.transform.position = heldPosition;
                 heldBlock.transform.rotation = Quaternion.identity;
-                heldBlock.GetComponent<TetrisBlock>().isHeld = true;
+                heldBlock.GetComponent<TetrisBlock>().IsHeld = true;
                 Spawn();
             }
             canHold = false;
@@ -152,10 +152,10 @@ public class SpawnBlocks : MonoBehaviour
         currentBlock = blockQueue.Dequeue();
         currentTetris = currentBlock.GetComponent<TetrisBlock>();
         currentBlock.transform.position = transform.position;
-        currentTetris.isHeld = false;
+        currentTetris.IsHeld = false;
         currentTetris.FallTime = adjustedFallTime;
         GameObject temp = Instantiate(blocks[Random.Range(0, blocks.Length)], transform.position, Quaternion.identity);
-        temp.GetComponent<TetrisBlock>().isHeld = true;
+        temp.GetComponent<TetrisBlock>().IsHeld = true;
         blockQueue.Enqueue(temp);
         ShiftQueue();
         canHold = true;
@@ -170,7 +170,7 @@ public class SpawnBlocks : MonoBehaviour
         for (int i = 0; i < 7; i++)
         {
             GameObject temp = Instantiate(blocks[Random.Range(0, blocks.Length)], new Vector3(15, 20 - (i * 2.5f)), Quaternion.identity);
-            temp.GetComponent<TetrisBlock>().isHeld = true;
+            temp.GetComponent<TetrisBlock>().IsHeld = true;
             blockQueue.Enqueue(temp);
         }
         Spawn();

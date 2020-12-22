@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum Direction
@@ -14,13 +15,14 @@ public class TetrisBlock : MonoBehaviour
     #region fields
     public Vector3 rotationPoint;
     private float lastTimestamp;
-    public bool isHeld = false;
+    private bool isHeld = false;
     public float fallTime;
     public static int width = 10;
     public static int height = 22;
     public static Transform[,] grid = new Transform[width, height];
     private ScoreBoard scoreBoard;
     private int currentLevel;
+    private GameObject ghostBlock;
     #endregion
 
     #region properties
@@ -28,6 +30,31 @@ public class TetrisBlock : MonoBehaviour
     {
         get { return fallTime; }
         set { fallTime = value; }
+    }
+    public bool IsHeld
+    {
+        get { return isHeld; }
+        set
+        {
+            isHeld = value;
+            if (!isHeld)
+            {
+                ghostBlock = Instantiate(gameObject);
+                // Color tempColor = ghostBlock.GetComponent<Renderer>().material.color;
+                // tempColor.a = 0.4f;
+                // ghostBlock.GetComponent<Renderer>().material.color = tempColor;
+                ghostBlock.transform.position = transform.position;
+                UpdateGhost();
+                ghostBlock.GetComponent<TetrisBlock>().IsHeld = true;
+            }
+            else
+            {
+                if (ghostBlock)
+                {
+                    Destroy(ghostBlock);
+                }
+            }
+        }
     }
     #endregion
 
@@ -64,7 +91,8 @@ public class TetrisBlock : MonoBehaviour
                 this.enabled = false;
                 if (AddToGrid())
                 {
-                    CheckLines();
+                    Destroy(ghostBlock);
+                    CheckGrid();
                     FindObjectOfType<SpawnBlocks>().Spawn();
                 }
                 else
@@ -85,6 +113,22 @@ public class TetrisBlock : MonoBehaviour
         while (ValidateMove(move))
         {
             transform.position += move;
+        }
+    }
+
+    /// <summary>
+    /// Updates the position of the ghost block
+    /// to give a preview of the potential move
+    /// </summary>
+    public void UpdateGhost()
+    {
+        ghostBlock.transform.position = transform.position;
+        ghostBlock.transform.rotation = transform.rotation;
+        TetrisBlock ghost = ghostBlock.GetComponent<TetrisBlock>();
+        Vector3 move = new Vector3(0, -1, 0);
+        while (ghost.ValidateMove(move))
+        {
+            ghostBlock.transform.position += move;
         }
     }
 
@@ -114,18 +158,24 @@ public class TetrisBlock : MonoBehaviour
     /// <summary>
     /// Checks for completed lines
     /// </summary>
-    void CheckLines()
+    void CheckGrid()
     {
         int linesCleared = 0;
+        bool perfectClear = true;
         for (int row = height - 1; row >= 0; row--)
         {
-            if (HasLine(row))
+            int blocks = HasLine(row);
+            if (blocks == width)
             {
                 linesCleared++;
                 DeleteLine(row);
             }
+            else if (blocks > 0)
+            {
+                perfectClear = false;
+            }
         }
-        currentLevel = scoreBoard.ClearLines(linesCleared);
+        currentLevel = scoreBoard.ClearLines(linesCleared, perfectClear);
     }
 
     /// <summary>
@@ -133,17 +183,18 @@ public class TetrisBlock : MonoBehaviour
     /// empty spaces
     /// </summary>
     /// <param name="row">Index of row</param>
-    /// <returns>Returns true if no empty spaces in row</returns>
-    bool HasLine(int row)
+    /// <returns>Returns number of blocks in row</returns>
+    int HasLine(int row)
     {
+        int blocks = 0;
         for (int col = 0; col < width; col++)
         {
-            if (grid[col, row] == null)
+            if (grid[col, row] != null)
             {
-                return false;
+                blocks++;
             }
         }
-        return true;
+        return blocks;
     }
 
     /// <summary>
@@ -201,6 +252,8 @@ public class TetrisBlock : MonoBehaviour
         if (ValidateMove(move))
         {
             transform.position += move;
+            ghostBlock.transform.position += move;
+            UpdateGhost();
         }
     }
 
@@ -215,6 +268,7 @@ public class TetrisBlock : MonoBehaviour
         if (direction == Direction.Right) angle *= -1;
 
         transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle);
+        ghostBlock.transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle);
         List<Vector3> adjustmentsMade = new List<Vector3>();
 
         foreach (Transform child in transform)
@@ -249,6 +303,7 @@ public class TetrisBlock : MonoBehaviour
             {
                 adjustmentsMade.Add(adjustment);
                 transform.position += adjustment;
+                ghostBlock.transform.position += adjustment;
             }
         }
 
@@ -258,9 +313,12 @@ public class TetrisBlock : MonoBehaviour
             foreach (Vector3 adjustment in adjustmentsMade)
             {
                 transform.position -= adjustment;
+                ghostBlock.transform.position -= adjustment;
             }
             transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle * -1f);
+            ghostBlock.transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle * -1f);
         }
+        UpdateGhost();
     }
 
     /// <summary>
