@@ -26,7 +26,6 @@ public class SpawnBlocks : MonoBehaviour
     void Start()
     {
         scoreBoard = FindObjectOfType<ScoreBoard>();
-        BeginGame();
     }
 
     // Update is called once per frame
@@ -40,7 +39,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnMoveLeft()
     {
-        currentTetris.Move(Direction.Left);
+        currentTetris?.Move(Direction.Left);
     }
 
     /// <summary>
@@ -48,7 +47,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnMoveRight()
     {
-        currentTetris.Move(Direction.Right);
+        currentTetris?.Move(Direction.Right);
     }
 
     /// <summary>
@@ -56,7 +55,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnRotateLeft()
     {
-        currentTetris.Rotate(Direction.Left);
+        currentTetris?.Rotate(Direction.Left);
     }
 
     /// <summary>
@@ -64,7 +63,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnRotateRight()
     {
-        currentTetris.Rotate(Direction.Right);
+        currentTetris?.Rotate(Direction.Right);
     }
 
     /// <summary>
@@ -73,7 +72,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnAutoDrop()
     {
-        currentTetris.AutoPlace();
+        currentTetris?.AutoPlace();
     }
 
     /// <summary>
@@ -82,7 +81,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnHoldBlock()
     {
-        if (canHold)
+        if (canHold && currentTetris != null)
         {
             if (heldBlock != null)
             {
@@ -115,15 +114,18 @@ public class SpawnBlocks : MonoBehaviour
     /// <param name="value">Value of button press</param>
     public void OnFastDrop(InputValue value)
     {
-        if (value.isPressed)
+        if (currentTetris != null)
         {
-            adjustedFallTime = fallTime * 0.1f;
+            if (value.isPressed)
+            {
+                adjustedFallTime = fallTime * 0.1f;
+            }
+            else
+            {
+                adjustedFallTime = (fallTime - ((scoreBoard.Level - 1f) * 0.05f));
+            }
+            currentTetris.FallTime = adjustedFallTime;
         }
-        else
-        {
-            adjustedFallTime = (fallTime - ((scoreBoard.Level - 1f) * 0.05f));
-        }
-        currentTetris.FallTime = adjustedFallTime;
     }
 
     /// <summary>
@@ -169,7 +171,7 @@ public class SpawnBlocks : MonoBehaviour
     /// <summary>
     /// Fills the initial queue and spawns the current block
     /// </summary>
-    void BeginGame()
+    public void BeginGame()
     {
         adjustedFallTime = (fallTime - ((scoreBoard.Level - 1f) * 0.05f));
         for (int i = 0; i < 7; i++)
