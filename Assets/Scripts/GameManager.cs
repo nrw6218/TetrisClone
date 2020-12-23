@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         menuPanel.SetActive(true);
+        pausePanel.SetActive(false);
+        spawner.QuitGame();
     }
 
     // Update is called once per frame

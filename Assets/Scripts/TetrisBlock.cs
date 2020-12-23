@@ -23,7 +23,7 @@ public class TetrisBlock : MonoBehaviour
     public static Transform[,] grid = new Transform[width, height];
     private ScoreBoard scoreBoard;
     private int currentLevel;
-    private GameObject ghostBlock;
+    public GameObject ghostBlock;
     #endregion
 
     #region properties
@@ -343,5 +343,23 @@ public class TetrisBlock : MonoBehaviour
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Resets entire grid
+    /// </summary>
+    public void ClearGrid()
+    {
+        for (int row = 0; row < height; row++)
+        {
+            for (int col = 0; col < width; col++)
+            {
+                if (grid[col, row] != null)
+                {
+                    Destroy(grid[col, row].gameObject);
+                    grid[col, row] = null;
+                }
+            }
+        }
     }
 }

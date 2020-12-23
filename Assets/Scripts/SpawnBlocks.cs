@@ -186,6 +186,28 @@ public class SpawnBlocks : MonoBehaviour
     }
 
     /// <summary>
+    /// Clears the current game
+    /// </summary>
+    public void QuitGame()
+    {
+        currentTetris?.ClearGrid();
+        while (blockQueue.Count > 0)
+        {
+            Destroy(blockQueue.Dequeue());
+        }
+        while (ghostQueue.Count > 0)
+        {
+            ghostQueue.Dequeue();
+        }
+        Destroy(heldBlock);
+        heldBlock = null;
+        Destroy(currentTetris.ghostBlock);
+        Destroy(currentBlock);
+        currentBlock = null;
+        currentTetris = null;
+    }
+
+    /// <summary>
     /// Updates positions of queued blocks
     /// </summary>
     void ShiftQueue()
