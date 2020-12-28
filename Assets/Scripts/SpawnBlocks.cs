@@ -148,6 +148,16 @@ public class SpawnBlocks : MonoBehaviour
     }
 
     /// <summary>
+    /// Resets state
+    /// </summary>
+    public void Reset()
+    {
+        pauseCanvas.SetActive(false);
+        Time.timeScale = 1f;
+        gamePaused = false;
+    }
+
+    /// <summary>
     /// Sets the current block to the first in the queue and
     /// creates a new one at the back of the queue
     /// </summary>

@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 {
     protected GameState gameState;
     private SpawnBlocks spawner;
+    private ScoreBoard scoreBoard;
 
     #region
     public GameObject menuPanel;
@@ -29,11 +30,14 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         spawner = FindObjectOfType<SpawnBlocks>();
+        scoreBoard = FindObjectOfType<ScoreBoard>();
     }
 
     public void StartGame()
     {
         menuPanel.SetActive(false);
+        scoreBoard.Reset();
+        spawner.Reset();
         spawner.BeginGame();
     }
 

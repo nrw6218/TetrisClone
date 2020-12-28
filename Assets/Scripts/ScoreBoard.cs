@@ -99,4 +99,15 @@ public class ScoreBoard : MonoBehaviour
         scoreText.text = "Score: " + score.ToString();
         levelText.text = "Level: " + level.ToString();
     }
+
+    /// <summary>
+    /// Resets the scoreboard to starting values
+    /// </summary>
+    public void Reset()
+    {
+        linesCleared = 0;
+        score = 0;
+        level = 1;
+        UpdateBoard();
+    }
 }
