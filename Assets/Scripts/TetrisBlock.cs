@@ -21,7 +21,7 @@ public class TetrisBlock : MonoBehaviour
     public static int height = 22;
     public static Transform[,] grid = new Transform[width, height];
     private ScoreBoard scoreBoard;
-    private int currentLevel;
+    private float currentLevel;
     public GameObject ghostBlock;
     private GameManager gameManager;
     #endregion

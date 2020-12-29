@@ -17,11 +17,18 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
     private bool ghostEnabled = true;
+    private float startLevel = 1;
 
     public bool GhostEnabled
     {
         get { return ghostEnabled; }
         set { ghostEnabled = value; }
+    }
+
+    public float StartLevel
+    {
+        get { return startLevel; }
+        set { startLevel = value; }
     }
 
     protected GameState gameState;
@@ -78,5 +85,15 @@ public class GameManager : MonoBehaviour
     public void ToggleGhost()
     {
         this.GhostEnabled = !ghostEnabled;
+    }
+
+    /// <summary>
+    /// Sets the starting level based on slider input
+    /// </summary>
+    /// <param name="slider">The options sliders</param>
+    public void SetStartLevel(Slider slider)
+    {
+        this.StartLevel = slider.value;
+        scoreBoard.startLevel = this.StartLevel;
     }
 }

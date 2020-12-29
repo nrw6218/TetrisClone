@@ -8,6 +8,8 @@ using UnityEngine.UI;
 /// </summary>
 public class ScoreBoard : MonoBehaviour
 {
+    private GameManager gameManager;
+
     public GameObject linesClearedBoard;
     private Text linesText;
     public GameObject scoreBoard;
@@ -16,13 +18,13 @@ public class ScoreBoard : MonoBehaviour
     private Text levelText;
 
     public int linesCleared = 0;
-    public int score = 0;
+    public float score = 0;
 
-    public int startLevel = 1;
-    public int level;
+    public float startLevel = 1;
+    public float level;
     public int linesPerLevel;
 
-    public int Level
+    public float Level
     {
         get { return level; }
     }
@@ -30,6 +32,8 @@ public class ScoreBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
+
         level = startLevel;
         linesText = linesClearedBoard?.GetComponent<Text>();
         scoreText = scoreBoard?.GetComponent<Text>();
@@ -51,7 +55,7 @@ public class ScoreBoard : MonoBehaviour
     /// <param name="lines">Number of lines cleared</param>
     /// <param name="perfectClear">Whether or not the player got a perfect clear</param>
     /// <returns>The current game level</returns>
-    public int ClearLines(int lines, bool perfectClear)
+    public float ClearLines(int lines, bool perfectClear)
     {
         // Lines
         linesCleared += lines;
@@ -93,7 +97,7 @@ public class ScoreBoard : MonoBehaviour
     /// <summary>
     /// Updates the GUI with current game values
     /// </summary>
-    void UpdateBoard()
+    public void UpdateBoard()
     {
         linesText.text = "Lines: " + linesCleared.ToString();
         scoreText.text = "Score: " + score.ToString();
@@ -107,7 +111,7 @@ public class ScoreBoard : MonoBehaviour
     {
         linesCleared = 0;
         score = 0;
-        level = 1;
+        level = gameManager.StartLevel;
         UpdateBoard();
     }
 }
