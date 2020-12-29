@@ -11,12 +11,11 @@ public enum Direction
 
 public class TetrisBlock : MonoBehaviour
 {
-
     #region fields
     public Vector3 rotationPoint;
     public GameObject ghostPrefab;
     private float lastTimestamp;
-    private bool isHeld = false;
+    private bool isHeld = true;
     public float fallTime;
     public static int width = 10;
     public static int height = 22;
@@ -24,6 +23,7 @@ public class TetrisBlock : MonoBehaviour
     private ScoreBoard scoreBoard;
     private int currentLevel;
     public GameObject ghostBlock;
+    private GameManager gameManager;
     #endregion
 
     #region properties
@@ -38,7 +38,7 @@ public class TetrisBlock : MonoBehaviour
         set
         {
             isHeld = value;
-            if (!isHeld)
+            if (!isHeld && gameManager && gameManager.GhostEnabled)
             {
                 ghostBlock = Instantiate(ghostPrefab);
                 ghostBlock.transform.position = transform.position;
@@ -57,8 +57,9 @@ public class TetrisBlock : MonoBehaviour
     #endregion
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
         scoreBoard = FindObjectOfType<ScoreBoard>();
         currentLevel = scoreBoard.Level;
     }
@@ -89,7 +90,10 @@ public class TetrisBlock : MonoBehaviour
                 this.enabled = false;
                 if (AddToGrid())
                 {
-                    Destroy(ghostBlock);
+                    if (ghostBlock)
+                    {
+                        Destroy(ghostBlock);
+                    }
                     CheckGrid();
                     FindObjectOfType<SpawnBlocks>().Spawn();
                 }
@@ -250,8 +254,11 @@ public class TetrisBlock : MonoBehaviour
         if (ValidateMove(move))
         {
             transform.position += move;
-            ghostBlock.transform.position += move;
-            UpdateGhost();
+            if (gameManager.GhostEnabled)
+            {
+                ghostBlock.transform.position += move;
+                UpdateGhost();
+            }
         }
     }
 
@@ -266,7 +273,10 @@ public class TetrisBlock : MonoBehaviour
         if (direction == Direction.Right) angle *= -1;
 
         transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle);
-        ghostBlock.transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle);
+        if (gameManager.GhostEnabled)
+        {
+            ghostBlock.transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle);
+        }
         List<Vector3> adjustmentsMade = new List<Vector3>();
 
         foreach (Transform child in transform)
@@ -301,7 +311,10 @@ public class TetrisBlock : MonoBehaviour
             {
                 adjustmentsMade.Add(adjustment);
                 transform.position += adjustment;
-                ghostBlock.transform.position += adjustment;
+                if (gameManager.GhostEnabled)
+                {
+                    ghostBlock.transform.position += adjustment;
+                }
             }
         }
 
@@ -311,12 +324,21 @@ public class TetrisBlock : MonoBehaviour
             foreach (Vector3 adjustment in adjustmentsMade)
             {
                 transform.position -= adjustment;
-                ghostBlock.transform.position -= adjustment;
+                if (gameManager.GhostEnabled)
+                {
+                    ghostBlock.transform.position -= adjustment;
+                }
             }
             transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle * -1f);
-            ghostBlock.transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle * -1f);
+            if (gameManager.GhostEnabled)
+            {
+                ghostBlock.transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle * -1f);
+            }
         }
-        UpdateGhost();
+        if (gameManager.GhostEnabled)
+        {
+            UpdateGhost();
+        }
     }
 
     /// <summary>

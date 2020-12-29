@@ -16,11 +16,19 @@ public enum GameState
 /// </summary>
 public class GameManager : MonoBehaviour
 {
+    private bool ghostEnabled = true;
+
+    public bool GhostEnabled
+    {
+        get { return ghostEnabled; }
+        set { ghostEnabled = value; }
+    }
+
     protected GameState gameState;
     private SpawnBlocks spawner;
     private ScoreBoard scoreBoard;
 
-    #region
+    #region UI Panels
     public GameObject menuPanel;
     public GameObject pausePanel;
     public GameObject hudPanel;
@@ -62,5 +70,13 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// Toggles the state of ghostEnabled
+    /// </summary>
+    public void ToggleGhost()
+    {
+        this.GhostEnabled = !ghostEnabled;
     }
 }

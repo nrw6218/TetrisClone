@@ -9,6 +9,7 @@ public class SpawnBlocks : MonoBehaviour
     public GameObject[] blocks;
     public GameObject[] ghostBlocks;
     public ScoreBoard scoreBoard;
+    public GameManager gameManager;
     public Vector3 heldPosition;
     private Queue<GameObject> blockQueue = new Queue<GameObject>();
     private Queue<GameObject> ghostQueue = new Queue<GameObject>();
@@ -25,6 +26,7 @@ public class SpawnBlocks : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
         scoreBoard = FindObjectOfType<ScoreBoard>();
     }
 
@@ -165,15 +167,20 @@ public class SpawnBlocks : MonoBehaviour
     {
         currentBlock = blockQueue.Dequeue();
         currentTetris = currentBlock.GetComponent<TetrisBlock>();
-        currentTetris.ghostPrefab = ghostQueue.Dequeue();
+        if (gameManager.GhostEnabled)
+        {
+            currentTetris.ghostPrefab = ghostQueue.Dequeue();
+        }
         currentBlock.transform.position = transform.position;
         currentTetris.IsHeld = false;
         currentTetris.FallTime = adjustedFallTime;
         int index = Random.Range(0, blocks.Length);
         GameObject temp = Instantiate(blocks[index], transform.position, Quaternion.identity);
-        temp.GetComponent<TetrisBlock>().IsHeld = true;
         blockQueue.Enqueue(temp);
-        ghostQueue.Enqueue(ghostBlocks[index]);
+        if (gameManager.GhostEnabled)
+        {
+            ghostQueue.Enqueue(ghostBlocks[index]);
+        }
         ShiftQueue();
         canHold = true;
     }
@@ -188,9 +195,11 @@ public class SpawnBlocks : MonoBehaviour
         {
             int index = Random.Range(0, blocks.Length);
             GameObject temp = Instantiate(blocks[index], new Vector3(15, 20 - (i * 2.5f)), Quaternion.identity);
-            temp.GetComponent<TetrisBlock>().IsHeld = true;
             blockQueue.Enqueue(temp);
-            ghostQueue.Enqueue(ghostBlocks[index]);
+            if (gameManager.GhostEnabled)
+            {
+                ghostQueue.Enqueue(ghostBlocks[index]);
+            }
         }
         Spawn();
     }
@@ -211,7 +220,10 @@ public class SpawnBlocks : MonoBehaviour
         }
         Destroy(heldBlock);
         heldBlock = null;
-        Destroy(currentTetris.ghostBlock);
+        if (currentTetris.ghostBlock)
+        {
+            Destroy(currentTetris.ghostBlock);
+        }
         Destroy(currentBlock);
         currentBlock = null;
         currentTetris = null;
