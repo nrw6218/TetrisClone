@@ -120,11 +120,11 @@ public class SpawnBlocks : MonoBehaviour
         {
             if (value.isPressed)
             {
-                adjustedFallTime = fallTime * 0.1f;
+                adjustedFallTime = fallTime * 0.15f;
             }
             else
             {
-                adjustedFallTime = (fallTime - ((scoreBoard.Level - 1f) * 0.05f));
+                adjustedFallTime = Mathf.Clamp((fallTime - ((scoreBoard.Level - 1f) * 0.025f)), fallTime * 0.2f, fallTime);
             }
             currentTetris.FallTime = adjustedFallTime;
         }
