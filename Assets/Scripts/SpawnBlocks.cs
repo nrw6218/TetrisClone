@@ -41,7 +41,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnMoveLeft()
     {
-        currentTetris?.Move(Direction.Left);
+        if (!gamePaused) currentTetris?.Move(Direction.Left);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnMoveRight()
     {
-        currentTetris?.Move(Direction.Right);
+        if (!gamePaused) currentTetris?.Move(Direction.Right);
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnRotateLeft()
     {
-        currentTetris?.Rotate(Direction.Left);
+        if (!gamePaused) currentTetris?.Rotate(Direction.Left);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnRotateRight()
     {
-        currentTetris?.Rotate(Direction.Right);
+        if (!gamePaused) currentTetris?.Rotate(Direction.Right);
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnAutoDrop()
     {
-        currentTetris?.AutoPlace();
+        if (!gamePaused) currentTetris?.AutoPlace();
     }
 
     /// <summary>
@@ -116,7 +116,7 @@ public class SpawnBlocks : MonoBehaviour
     /// <param name="value">Value of button press</param>
     public void OnFastDrop(InputValue value)
     {
-        if (currentTetris != null)
+        if (currentTetris != null && !gamePaused)
         {
             if (value.isPressed)
             {
