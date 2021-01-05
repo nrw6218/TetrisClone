@@ -21,7 +21,6 @@ public class TetrisBlock : MonoBehaviour
     public static int height = 22;
     public static Transform[,] grid = new Transform[width, height];
     private ScoreBoard scoreBoard;
-    private float currentLevel;
     public GameObject ghostBlock;
     private GameManager gameManager;
     #endregion
@@ -32,6 +31,7 @@ public class TetrisBlock : MonoBehaviour
         get { return fallTime; }
         set { fallTime = value; }
     }
+
     public bool IsHeld
     {
         get { return isHeld; }
@@ -61,7 +61,6 @@ public class TetrisBlock : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         scoreBoard = FindObjectOfType<ScoreBoard>();
-        currentLevel = scoreBoard.Level;
     }
 
     // Update is called once per frame
@@ -99,7 +98,7 @@ public class TetrisBlock : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("GAME OVER");
+                    gameManager.GameOver();
                 }
             }
             lastTimestamp = Time.time;
@@ -177,7 +176,7 @@ public class TetrisBlock : MonoBehaviour
                 perfectClear = false;
             }
         }
-        currentLevel = scoreBoard.ClearLines(linesCleared, perfectClear);
+        scoreBoard.ClearLines(linesCleared, perfectClear);
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,13 +11,18 @@ public class ScoreBoard : MonoBehaviour
 {
     private GameManager gameManager;
 
+    #region GUI Objects
     public GameObject linesClearedBoard;
-    private Text linesText;
+    private TextMeshProUGUI linesText;
     public GameObject scoreBoard;
-    private Text scoreText;
+    private TextMeshProUGUI scoreText;
     public GameObject levelBoard;
-    private Text levelText;
+    private TextMeshProUGUI levelText;
+    public GameObject messageBoard;
+    private TextMeshProUGUI messageText;
+    #endregion
 
+    #region Score Values
     public int linesCleared = 0;
     public float score = 0;
 
@@ -28,6 +34,7 @@ public class ScoreBoard : MonoBehaviour
     {
         get { return level; }
     }
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -35,17 +42,12 @@ public class ScoreBoard : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
 
         level = startLevel;
-        linesText = linesClearedBoard?.GetComponent<Text>();
-        scoreText = scoreBoard?.GetComponent<Text>();
-        levelText = levelBoard?.GetComponent<Text>();
+        linesText = linesClearedBoard?.GetComponent<TextMeshProUGUI>();
+        scoreText = scoreBoard?.GetComponent<TextMeshProUGUI>();
+        levelText = levelBoard?.GetComponent<TextMeshProUGUI>();
+        messageText = messageBoard?.GetComponent<TextMeshProUGUI>();
 
         UpdateBoard();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     /// <summary>
@@ -65,16 +67,52 @@ public class ScoreBoard : MonoBehaviour
         switch (lines)
         {
             case 1:
-                score += level * (perfectClear ? 100 : 800);
+                if (perfectClear)
+                {
+                    score += level * 800;
+                    StartCoroutine(DisplayMessage("PERFECT CLEAR", 2));
+                }
+                else
+                {
+                    score += level * 100;
+                    StartCoroutine(DisplayMessage("SINGLE", 2));
+                }
                 break;
             case 2:
-                score += level * (perfectClear ? 300 : 1200);
+                if (perfectClear)
+                {
+                    score += level * 1200;
+                    StartCoroutine(DisplayMessage("PERFECT CLEAR", 2));
+                }
+                else
+                {
+                    score += level * 200;
+                    StartCoroutine(DisplayMessage("DOUBLE", 2));
+                }
                 break;
             case 3:
-                score += level * (perfectClear ? 500 : 1800);
+                if (perfectClear)
+                {
+                    score += level * 1800;
+                    StartCoroutine(DisplayMessage("PERFECT CLEAR", 2));
+                }
+                else
+                {
+                    score += level * 500;
+                    StartCoroutine(DisplayMessage("TRIPLE", 2));
+                }
                 break;
             case 4:
-                score += level * (perfectClear ? 800: 2000);
+                if (perfectClear)
+                {
+                    score += level * 2000;
+                    StartCoroutine(DisplayMessage("PERFECT CLEAR", 2));
+                }
+                else
+                {
+                    score += level * 800;
+                    StartCoroutine(DisplayMessage("QUADRUPLE", 2));
+                }
                 break;
             default:
                 break;
@@ -86,6 +124,7 @@ public class ScoreBoard : MonoBehaviour
         {
             level++;
             linesPerLevel = Mathf.Max(0, linesPerLevel - 10);
+            StartCoroutine(DisplayMessage("LEVEL UP", 2));
         }
 
         // Update board
@@ -102,6 +141,20 @@ public class ScoreBoard : MonoBehaviour
         linesText.text = "Lines: " + linesCleared.ToString();
         scoreText.text = "Score: " + score.ToString();
         levelText.text = "Level: " + level.ToString();
+    }
+
+    /// <summary>
+    /// Displays the given text on the message board for
+    /// the provided number of seconds
+    /// </summary>
+    /// <param name="message">The text to display to the player</param>
+    /// <param name="seconds">The amount of time to display the text</param>
+    /// <returns></returns>
+    IEnumerator DisplayMessage(string message, float seconds)
+    {
+        messageText.text = message;
+        yield return new WaitForSeconds(seconds);
+        messageText.text = "";
     }
 
     /// <summary>

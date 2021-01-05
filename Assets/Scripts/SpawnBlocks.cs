@@ -19,8 +19,6 @@ public class SpawnBlocks : MonoBehaviour
     private bool canHold = true;
     private float fallTime = 0.8f;
     private float adjustedFallTime;
-    public GameObject pauseCanvas;
-    public bool gamePaused;
     #endregion
 
     // Start is called before the first frame update
@@ -41,7 +39,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnMoveLeft()
     {
-        if (!gamePaused) currentTetris?.Move(Direction.Left);
+        if (!(gameManager.gameState == GameState.Pause)) currentTetris?.Move(Direction.Left);
     }
 
     /// <summary>
@@ -49,7 +47,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnMoveRight()
     {
-        if (!gamePaused) currentTetris?.Move(Direction.Right);
+        if (!(gameManager.gameState == GameState.Pause)) currentTetris?.Move(Direction.Right);
     }
 
     /// <summary>
@@ -57,7 +55,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnRotateLeft()
     {
-        if (!gamePaused) currentTetris?.Rotate(Direction.Left);
+        if (!(gameManager.gameState == GameState.Pause)) currentTetris?.Rotate(Direction.Left);
     }
 
     /// <summary>
@@ -65,7 +63,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnRotateRight()
     {
-        if (!gamePaused) currentTetris?.Rotate(Direction.Right);
+        if (!(gameManager.gameState == GameState.Pause)) currentTetris?.Rotate(Direction.Right);
     }
 
     /// <summary>
@@ -74,7 +72,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnAutoDrop()
     {
-        if (!gamePaused) currentTetris?.AutoPlace();
+        if (!(gameManager.gameState == GameState.Pause)) currentTetris?.AutoPlace();
     }
 
     /// <summary>
@@ -83,7 +81,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     void OnHoldBlock()
     {
-        if (canHold && currentTetris != null)
+        if (canHold && currentTetris != null && !(gameManager.gameState == GameState.Pause))
         {
             if (heldBlock != null)
             {
@@ -116,7 +114,7 @@ public class SpawnBlocks : MonoBehaviour
     /// <param name="value">Value of button press</param>
     public void OnFastDrop(InputValue value)
     {
-        if (currentTetris != null && !gamePaused)
+        if (currentTetris != null && !(gameManager.gameState == GameState.Pause))
         {
             if (value.isPressed)
             {
@@ -135,28 +133,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     public void OnPause()
     {
-        if (gamePaused)
-        {
-            pauseCanvas.SetActive(false);
-            Time.timeScale = 1f;
-            gamePaused = false;
-        }
-        else
-        {
-            pauseCanvas.SetActive(true);
-            Time.timeScale = 0f;
-            gamePaused = true;
-        }
-    }
-
-    /// <summary>
-    /// Resets state
-    /// </summary>
-    public void Reset()
-    {
-        pauseCanvas.SetActive(false);
-        Time.timeScale = 1f;
-        gamePaused = false;
+        gameManager.PauseGame();
     }
 
     /// <summary>
