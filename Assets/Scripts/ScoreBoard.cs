@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class ScoreBoard : MonoBehaviour
 {
     private GameManager gameManager;
+    private SpawnBlocks spawner;
 
     #region GUI Objects
     public GameObject linesClearedBoard;
@@ -46,6 +47,7 @@ public class ScoreBoard : MonoBehaviour
         scoreText = scoreBoard?.GetComponent<TextMeshProUGUI>();
         levelText = levelBoard?.GetComponent<TextMeshProUGUI>();
         messageText = messageBoard?.GetComponent<TextMeshProUGUI>();
+        spawner = FindObjectOfType<SpawnBlocks>();
 
         UpdateBoard();
     }
@@ -155,6 +157,25 @@ public class ScoreBoard : MonoBehaviour
         messageText.text = message;
         yield return new WaitForSeconds(seconds);
         messageText.text = "";
+    }
+
+    /// <summary>
+    /// Displays a 3-second countdown on the HUD
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator Countdown()
+    {
+        for (int i = 3; i > 0; i--)
+        {
+            messageText.text = i.ToString();
+            yield return new WaitForSeconds(1);
+        }
+
+        messageText.text = "START!";
+        yield return new WaitForSeconds(0.25f);
+
+        messageText.text = "";
+        spawner.BeginGame();
     }
 
     /// <summary>

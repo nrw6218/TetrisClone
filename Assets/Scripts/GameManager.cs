@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         pausePanel.SetActive(false);
         Time.timeScale = 1f;
         scoreBoard.Reset();
-        spawner.BeginGame();
+        StartCoroutine(scoreBoard.Countdown());
     }
 
     /// <summary>
