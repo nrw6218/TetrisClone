@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Spawn point for blocks on the screen
+/// </summary>
 public class SpawnBlocks : MonoBehaviour
 {
     #region fields
@@ -168,7 +171,7 @@ public class SpawnBlocks : MonoBehaviour
     public void BeginGame()
     {
         adjustedFallTime = (fallTime - ((scoreBoard.Level - 1f) * 0.05f));
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 4; i++)
         {
             int index = Random.Range(0, blocks.Length);
             GameObject temp = Instantiate(blocks[index], new Vector3(15, 20 - (i * 2.5f)), Quaternion.identity);
@@ -186,7 +189,7 @@ public class SpawnBlocks : MonoBehaviour
     /// </summary>
     public void QuitGame()
     {
-        currentTetris?.ClearGrid();
+        GameBoard.ClearGrid();
         while (blockQueue.Count > 0)
         {
             Destroy(blockQueue.Dequeue());

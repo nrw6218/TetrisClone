@@ -26,6 +26,7 @@ public class ScoreBoard : MonoBehaviour
     #region Score Values
     public int linesCleared = 0;
     public float score = 0;
+    private float powerUpLevel = 0;
 
     public float startLevel = 1;
     public float level;
@@ -64,6 +65,7 @@ public class ScoreBoard : MonoBehaviour
         // Lines
         linesCleared += lines;
         linesPerLevel += lines;
+        powerUpLevel = Mathf.Clamp(powerUpLevel+lines, 0, 1000);
 
         // Score
         switch (lines)
@@ -140,9 +142,9 @@ public class ScoreBoard : MonoBehaviour
     /// </summary>
     public void UpdateBoard()
     {
-        linesText.text = "Lines: " + linesCleared.ToString();
-        scoreText.text = "Score: " + score.ToString();
-        levelText.text = "Level: " + level.ToString();
+        linesText.text = linesCleared.ToString();
+        scoreText.text = score.ToString();
+        levelText.text = level.ToString();
     }
 
     /// <summary>
@@ -170,7 +172,7 @@ public class ScoreBoard : MonoBehaviour
             messageText.text = i.ToString();
             yield return new WaitForSeconds(1);
         }
-
+        
         messageText.text = "START!";
         yield return new WaitForSeconds(0.25f);
 

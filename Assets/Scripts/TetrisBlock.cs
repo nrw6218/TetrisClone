@@ -9,6 +9,9 @@ public enum Direction
     Right
 }
 
+/// <summary>
+/// A single game block of varying shape
+/// </summary>
 public class TetrisBlock : MonoBehaviour
 {
     #region fields
@@ -18,9 +21,6 @@ public class TetrisBlock : MonoBehaviour
     private bool isHeld = true;
     public float fallTime;
     public static int width = 10;
-    public static int height = 22;
-    public static Transform[,] grid = new Transform[width, height];
-    private ScoreBoard scoreBoard;
     public GameObject ghostBlock;
     private GameManager gameManager;
     #endregion
@@ -60,7 +60,6 @@ public class TetrisBlock : MonoBehaviour
     void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
-        scoreBoard = FindObjectOfType<ScoreBoard>();
     }
 
     // Update is called once per frame
@@ -87,13 +86,13 @@ public class TetrisBlock : MonoBehaviour
             else
             {
                 this.enabled = false;
-                if (AddToGrid())
+                if (GameBoard.AddToGrid(transform))
                 {
                     if (ghostBlock)
                     {
                         Destroy(ghostBlock);
                     }
-                    CheckGrid();
+                    GameBoard.CheckGrid();
                     FindObjectOfType<SpawnBlocks>().Spawn();
                 }
                 else
@@ -130,106 +129,6 @@ public class TetrisBlock : MonoBehaviour
         while (ghost.ValidateMove(move))
         {
             ghostBlock.transform.position += move;
-        }
-    }
-
-    /// <summary>
-    /// Adds child transforms of block to grid 2d array
-    /// so blocks don't overlap at bottom
-    /// </summary>
-    /// <returns>True if success, false if outside of board bounds</returns>
-    bool AddToGrid()
-    {
-        foreach (Transform child in transform)
-        {
-            int roundedX = Mathf.RoundToInt(child.transform.position.x);
-            int roundedY = Mathf.RoundToInt(child.transform.position.y);
-
-            if (roundedY >= (height - 2))
-            {
-                return false;
-            }
-
-            grid[roundedX, roundedY] = child;
-        }
-
-        return true;
-    }
-
-    /// <summary>
-    /// Checks for completed lines
-    /// </summary>
-    void CheckGrid()
-    {
-        int linesCleared = 0;
-        bool perfectClear = true;
-        for (int row = height - 1; row >= 0; row--)
-        {
-            int blocks = HasLine(row);
-            if (blocks == width)
-            {
-                linesCleared++;
-                DeleteLine(row);
-            }
-            else if (blocks > 0)
-            {
-                perfectClear = false;
-            }
-        }
-        scoreBoard.ClearLines(linesCleared, perfectClear);
-    }
-
-    /// <summary>
-    /// Checks a grid row to see if there are any
-    /// empty spaces
-    /// </summary>
-    /// <param name="row">Index of row</param>
-    /// <returns>Returns number of blocks in row</returns>
-    int HasLine(int row)
-    {
-        int blocks = 0;
-        for (int col = 0; col < width; col++)
-        {
-            if (grid[col, row] != null)
-            {
-                blocks++;
-            }
-        }
-        return blocks;
-    }
-
-    /// <summary>
-    /// Deletes the given row from the grid
-    /// and adjusts the grid accordingly
-    /// </summary>
-    /// <param name="row">Index of the row to delete</param>
-    void DeleteLine(int row)
-    {
-        for (int col = 0; col < width; col++)
-        {
-            Destroy(grid[col, row].gameObject);
-            grid[col, row] = null;
-        }
-        ShiftRows(row);
-    }
-
-    /// <summary>
-    /// Shfits all row down from the given row up
-    /// </summary>
-    /// <param name="row">The row to start shifting from</param>
-    void ShiftRows(int row)
-    {
-        for (int r = row; r < height; r++)
-        {
-            for (int c = 0; c < width; c++)
-            {
-                if (grid[c, r] != null)
-                {
-                    grid[c, r - 1] = grid[c, r];
-                    grid[c, r - 1].transform.position -= new Vector3(0, 1, 0);
-                    grid[c, r] = null;
-                }
-            }
         }
     }
 
@@ -298,9 +197,9 @@ public class TetrisBlock : MonoBehaviour
             {
                 adjustmentY = Mathf.Abs(roundedY);
             }
-            if (roundedY >= height)
+            if (roundedY >= GameBoard.height)
             {
-                adjustmentY = (height - 1) - roundedY;
+                adjustmentY = (GameBoard.height - 1) - roundedY;
             }
 
             Vector3 adjustment = new Vector3(adjustmentX, adjustmentY, 0);
@@ -357,7 +256,7 @@ public class TetrisBlock : MonoBehaviour
             {
                 return false;
             }
-            else if (grid[roundedX, roundedY] != null)
+            else if (GameBoard.grid[roundedX, roundedY] != null)
             {
                 return false;
             }
@@ -367,20 +266,30 @@ public class TetrisBlock : MonoBehaviour
     }
 
     /// <summary>
-    /// Resets entire grid
+    /// Makes the object flicker on and off for 
     /// </summary>
-    public void ClearGrid()
+    /// <returns></returns>
+    IEnumerator Flicker()
     {
-        for (int row = 0; row < height; row++)
-        {
-            for (int col = 0; col < width; col++)
-            {
-                if (grid[col, row] != null)
-                {
-                    Destroy(grid[col, row].gameObject);
-                    grid[col, row] = null;
-                }
-            }
-        }
+        // TO-DO: MAKE THE LIGHT FLICKER
+        yield return new WaitForSeconds(2f);
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Triggers the flicker animation and
+    /// makes the block invisible
+    /// </summary>
+    public void PowerOff()
+    {
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Turns on the visibility of the block
+    /// </summary>
+    public void PowerOn()
+    {
+        gameObject.SetActive(true);
     }
 }
