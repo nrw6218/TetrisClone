@@ -38,7 +38,7 @@ public class GameBoard : MonoBehaviour
         {
             gridVisible = !gridVisible;
 
-            ToggleGridLights(gridVisible);
+            // ToggleGridLights(gridVisible);
 
             if (gridVisible)
             {
@@ -100,7 +100,7 @@ public class GameBoard : MonoBehaviour
                 if (grid[c, r] != null)
                 {
                     grid[c, r - 1] = grid[c, r];
-                    grid[c, r - 1].transform.position -= new Vector3(0, 1, 0);
+                    grid[c, r - 1].transform.localPosition -= new Vector3(0, 1, 0);
                     grid[c, r] = null;
                 }
             }
@@ -158,14 +158,16 @@ public class GameBoard : MonoBehaviour
     {
         foreach (Transform child in block)
         {
-            int roundedX = Mathf.RoundToInt(child.transform.position.x);
-            int roundedY = Mathf.RoundToInt(child.transform.position.y);
+            int roundedX = Mathf.RoundToInt(block.transform.localPosition.x + child.transform.localPosition.x);
+            int roundedY = Mathf.RoundToInt(block.transform.localPosition.y + child.transform.localPosition.y);
 
-            if (roundedY >= (GameBoard.height - 2))
+            if (roundedY >= (height - 2))
             {
+                Debug.Log(roundedY + " , " + (height - 2));
                 return false;
             }
 
+            Debug.Log(roundedX + "," + roundedY);
             grid[roundedX, roundedY] = child;
         }
 
