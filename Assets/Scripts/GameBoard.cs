@@ -11,6 +11,7 @@ public class GameBoard : MonoBehaviour
     public static int width = 10;
     public static int height = 22;
     public static Transform[,] grid = new Transform[width, height];
+    public static GameObject boardObject;
     #endregion
 
     #region timer
@@ -27,6 +28,7 @@ public class GameBoard : MonoBehaviour
     void Start()
     {
         scoreBoard = FindObjectOfType<ScoreBoard>();
+        boardObject = GameObject.FindGameObjectWithTag("Board");
         interpolationPeriod = Random.Range(40, 50);
     }
 
@@ -100,7 +102,7 @@ public class GameBoard : MonoBehaviour
                 if (grid[c, r] != null)
                 {
                     grid[c, r - 1] = grid[c, r];
-                    grid[c, r - 1].transform.localPosition -= new Vector3(0, 1, 0);
+                    grid[c, r - 1].transform.position -= new Vector3(0, 1, 0);
                     grid[c, r] = null;
                 }
             }
@@ -158,8 +160,9 @@ public class GameBoard : MonoBehaviour
     {
         foreach (Transform child in block)
         {
-            int roundedX = Mathf.RoundToInt(block.transform.localPosition.x + child.transform.localPosition.x);
-            int roundedY = Mathf.RoundToInt(block.transform.localPosition.y + child.transform.localPosition.y);
+            Vector3 difference = boardObject.transform.InverseTransformPoint(child.transform.position) - block.transform.position;
+            int roundedX = Mathf.RoundToInt(block.transform.localPosition.x + difference.x);
+            int roundedY = Mathf.RoundToInt(block.transform.localPosition.y + difference.y);
 
             if (roundedY >= (height - 2))
             {
@@ -167,8 +170,14 @@ public class GameBoard : MonoBehaviour
                 return false;
             }
 
-            Debug.Log(roundedX + "," + roundedY);
+            Debug.Log("[" + roundedX + "," + roundedY + "]");
             grid[roundedX, roundedY] = child;
+        }
+
+        foreach (Transform child in block)
+        {
+            child.parent = boardObject.transform;
+            child.rotation = boardObject.transform.rotation;
         }
 
         return true;

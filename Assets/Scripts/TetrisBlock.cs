@@ -170,11 +170,12 @@ public class TetrisBlock : MonoBehaviour
         float angle = 90;
         if (direction == Direction.Right) angle *= -1;
 
-        // transform.Rotate(0, 0, angle);
-        transform.RotateAround(rotationPoint, new Vector3(0, 0, 1), angle);
+        transform.Rotate(0, 0, angle);
+        // transform.RotateAround(transform.position, new Vector3(0, 0, 1), angle);
         if (gameManager.GhostEnabled)
         {
-            ghostBlock.transform.RotateAround(rotationPoint, new Vector3(0, 0, 1), angle);
+            ghostBlock.transform.Rotate(0, 0, angle);
+            // ghostBlock.transform.RotateAround(transform.position, new Vector3(0, 0, 1), angle);
         }
         List<Vector3> adjustmentsMade = new List<Vector3>();
 
@@ -228,10 +229,12 @@ public class TetrisBlock : MonoBehaviour
                     ghostBlock.transform.localPosition -= adjustment;
                 }
             }
-            transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle * -1f);
+            transform.Rotate(0, 0, angle * -1f);
+            // transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle * -1f);
             if (gameManager.GhostEnabled)
             {
-                ghostBlock.transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle * -1f);
+                ghostBlock.transform.Rotate(0, 0, angle * -1f);
+                // ghostBlock.transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle * -1f);
             }
         }
         if (gameManager.GhostEnabled)
@@ -250,10 +253,9 @@ public class TetrisBlock : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            int roundedX = Mathf.RoundToInt(transform.localPosition.x + child.transform.localPosition.x + move.x);
-            int roundedY = Mathf.RoundToInt(transform.localPosition.y + child.transform.localPosition.y + move.y);
-
-            Debug.Log(roundedX + "," + roundedY);
+            Vector3 difference = GameBoard.boardObject.transform.InverseTransformPoint(child.transform.position) - transform.position;
+            int roundedX = Mathf.RoundToInt(transform.localPosition.x + difference.x + move.x);
+            int roundedY = Mathf.RoundToInt(transform.localPosition.y + difference.y + move.y);
 
             if (roundedX < 0 || roundedX >= width || roundedY < 0)
             {
