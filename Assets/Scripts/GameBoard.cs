@@ -166,11 +166,9 @@ public class GameBoard : MonoBehaviour
 
             if (roundedY >= (height - 2))
             {
-                Debug.Log(roundedY + " , " + (height - 2));
                 return false;
             }
 
-            Debug.Log("[" + roundedX + "," + roundedY + "]");
             grid[roundedX, roundedY] = child;
         }
 
