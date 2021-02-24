@@ -79,6 +79,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: I-Block
       objectReference: {fileID: 0}
+    - target: {fileID: 5504262333327000208, guid: 4737b0f3044c28748b6b817cd2fecd87, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504262333327000208, guid: 4737b0f3044c28748b6b817cd2fecd87, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4737b0f3044c28748b6b817cd2fecd87, type: 3}
 --- !u!1 &1936533669022368595 stripped
