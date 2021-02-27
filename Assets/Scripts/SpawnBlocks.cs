@@ -18,6 +18,7 @@ public class SpawnBlocks : MonoBehaviour
     private Queue<GameObject> ghostQueue = new Queue<GameObject>();
     private GameObject currentBlock = null;
     private TetrisBlock currentTetris = null;
+    public GameObject boardObject;
     private GameObject heldBlock = null;
     private bool canHold = true;
     private float fallTime = 0.8f;
@@ -90,10 +91,13 @@ public class SpawnBlocks : MonoBehaviour
             {
                 GameObject temp = heldBlock;
                 heldBlock = currentBlock;
+                heldBlock.transform.parent = null;
                 heldBlock.transform.position = heldPosition;
                 heldBlock.transform.rotation = Quaternion.identity;
                 heldBlock.GetComponent<TetrisBlock>().IsHeld = true;
                 currentBlock = temp;
+                currentBlock.transform.parent = boardObject.transform;
+                currentBlock.transform.rotation = boardObject.transform.rotation;
                 currentTetris = currentBlock.GetComponent<TetrisBlock>();
                 currentBlock.transform.position = transform.position;
                 currentTetris.IsHeld = false;
@@ -146,6 +150,8 @@ public class SpawnBlocks : MonoBehaviour
     public void Spawn()
     {
         currentBlock = blockQueue.Dequeue();
+        currentBlock.transform.parent = boardObject.transform;
+        currentBlock.transform.rotation = boardObject.transform.rotation;
         currentTetris = currentBlock.GetComponent<TetrisBlock>();
         if (gameManager.GhostEnabled)
         {

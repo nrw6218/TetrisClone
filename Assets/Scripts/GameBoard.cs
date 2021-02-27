@@ -11,6 +11,7 @@ public class GameBoard : MonoBehaviour
     public static int width = 10;
     public static int height = 22;
     public static Transform[,] grid = new Transform[width, height];
+    public static GameObject boardObject;
     #endregion
 
     #region timer
@@ -27,6 +28,7 @@ public class GameBoard : MonoBehaviour
     void Start()
     {
         scoreBoard = FindObjectOfType<ScoreBoard>();
+        boardObject = GameObject.FindGameObjectWithTag("Board");
         interpolationPeriod = Random.Range(40, 50);
     }
 
@@ -158,15 +160,22 @@ public class GameBoard : MonoBehaviour
     {
         foreach (Transform child in block)
         {
-            int roundedX = Mathf.RoundToInt(child.transform.position.x);
-            int roundedY = Mathf.RoundToInt(child.transform.position.y);
+            Vector3 difference = boardObject.transform.InverseTransformPoint(child.transform.position) - block.transform.position;
+            int roundedX = Mathf.RoundToInt(block.transform.localPosition.x + difference.x);
+            int roundedY = Mathf.RoundToInt(block.transform.localPosition.y + difference.y);
 
-            if (roundedY >= (GameBoard.height - 2))
+            if (roundedY >= (height - 2))
             {
                 return false;
             }
 
             grid[roundedX, roundedY] = child;
+        }
+
+        foreach (Transform child in block)
+        {
+            child.parent = boardObject.transform;
+            child.rotation = boardObject.transform.rotation;
         }
 
         return true;

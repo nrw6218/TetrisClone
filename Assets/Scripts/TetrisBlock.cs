@@ -41,7 +41,7 @@ public class TetrisBlock : MonoBehaviour
             if (!isHeld && gameManager && gameManager.GhostEnabled)
             {
                 ghostBlock = Instantiate(ghostPrefab);
-                ghostBlock.transform.position = transform.position;
+                ghostBlock.transform.localPosition = transform.localPosition;
                 UpdateGhost();
                 ghostBlock.GetComponent<TetrisBlock>().IsHeld = true;
             }
@@ -81,7 +81,7 @@ public class TetrisBlock : MonoBehaviour
             Vector3 move = new Vector3(0, -1, 0);
             if (ValidateMove(move))
             {
-                transform.position += move;
+                transform.localPosition += move;
             }
             else
             {
@@ -112,7 +112,7 @@ public class TetrisBlock : MonoBehaviour
         Vector3 move = new Vector3(0, -1, 0);
         while (ValidateMove(move))
         {
-            transform.position += move;
+            transform.localPosition += move;
         }
     }
 
@@ -122,13 +122,13 @@ public class TetrisBlock : MonoBehaviour
     /// </summary>
     public void UpdateGhost()
     {
-        ghostBlock.transform.position = transform.position;
+        ghostBlock.transform.localPosition = transform.localPosition;
         ghostBlock.transform.rotation = transform.rotation;
         TetrisBlock ghost = ghostBlock.GetComponent<TetrisBlock>();
         Vector3 move = new Vector3(0, -1, 0);
         while (ghost.ValidateMove(move))
         {
-            ghostBlock.transform.position += move;
+            ghostBlock.transform.localPosition += move;
         }
     }
 
@@ -151,10 +151,10 @@ public class TetrisBlock : MonoBehaviour
 
         if (ValidateMove(move))
         {
-            transform.position += move;
+            transform.localPosition += move;
             if (gameManager.GhostEnabled)
             {
-                ghostBlock.transform.position += move;
+                ghostBlock.transform.localPosition += move;
                 UpdateGhost();
             }
         }
@@ -170,17 +170,18 @@ public class TetrisBlock : MonoBehaviour
         float angle = 90;
         if (direction == Direction.Right) angle *= -1;
 
-        transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle);
+        transform.Rotate(0, 0, angle);
         if (gameManager.GhostEnabled)
         {
-            ghostBlock.transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle);
+            ghostBlock.transform.Rotate(0, 0, angle);
         }
         List<Vector3> adjustmentsMade = new List<Vector3>();
 
         foreach (Transform child in transform)
         {
-            int roundedX = Mathf.RoundToInt(child.transform.position.x);
-            int roundedY = Mathf.RoundToInt(child.transform.position.y);
+            Vector3 difference = GameBoard.boardObject.transform.InverseTransformPoint(child.transform.position) - transform.position;
+            int roundedX = Mathf.RoundToInt(transform.localPosition.x + difference.x);
+            int roundedY = Mathf.RoundToInt(transform.localPosition.y + difference.y);
             int adjustmentX = 0;
             int adjustmentY = 0;
 
@@ -208,10 +209,10 @@ public class TetrisBlock : MonoBehaviour
             if (adjustment != Vector3.zero)
             {
                 adjustmentsMade.Add(adjustment);
-                transform.position += adjustment;
+                transform.localPosition += adjustment;
                 if (gameManager.GhostEnabled)
                 {
-                    ghostBlock.transform.position += adjustment;
+                    ghostBlock.transform.localPosition += adjustment;
                 }
             }
         }
@@ -221,16 +222,16 @@ public class TetrisBlock : MonoBehaviour
         {
             foreach (Vector3 adjustment in adjustmentsMade)
             {
-                transform.position -= adjustment;
+                transform.localPosition -= adjustment;
                 if (gameManager.GhostEnabled)
                 {
-                    ghostBlock.transform.position -= adjustment;
+                    ghostBlock.transform.localPosition -= adjustment;
                 }
             }
-            transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle * -1f);
+            transform.Rotate(0, 0, angle * -1f);
             if (gameManager.GhostEnabled)
             {
-                ghostBlock.transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), angle * -1f);
+                ghostBlock.transform.Rotate(0, 0, angle * -1f);
             }
         }
         if (gameManager.GhostEnabled)
@@ -249,8 +250,9 @@ public class TetrisBlock : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            int roundedX = Mathf.RoundToInt(child.transform.position.x + move.x);
-            int roundedY = Mathf.RoundToInt(child.transform.position.y + move.y);
+            Vector3 difference = GameBoard.boardObject.transform.InverseTransformPoint(child.transform.position) - transform.position;
+            int roundedX = Mathf.RoundToInt(transform.localPosition.x + difference.x + move.x);
+            int roundedY = Mathf.RoundToInt(transform.localPosition.y + difference.y + move.y);
 
             if (roundedX < 0 || roundedX >= width || roundedY < 0)
             {
