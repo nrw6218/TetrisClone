@@ -40,7 +40,7 @@ public class GameBoard : MonoBehaviour
         {
             gridVisible = !gridVisible;
 
-            // ToggleGridLights(gridVisible);
+            ToggleGridLights(gridVisible);
 
             if (gridVisible)
             {
