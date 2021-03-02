@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 /// <summary>
 /// Spawn point for blocks on the screen
@@ -25,6 +26,13 @@ public class SpawnBlocks : MonoBehaviour
     private float adjustedFallTime;
     #endregion
 
+    #region movement
+    private bool moveHold = false;
+    private Direction holdDirection = Direction.Left;
+    private float startTime = 0;
+    private bool tap = false;
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,23 +43,85 @@ public class SpawnBlocks : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (moveHold && Time.time - startTime >= (tap ? 0.5f : 0.15f))
+        {
+            if (holdDirection == Direction.Left)
+            {
+                MoveLeft();
+            }
+            else
+            {
+                MoveRight();
+            }
+            startTime = Time.time;
+            tap = false;
+        }
+    }
 
+    /// <summary>
+    /// Starts moving the block in the given direction
+    /// </summary>
+    /// <param name="direction">The direction to move the block</param>
+    void StartHold(Direction direction)
+    {
+        moveHold = true;
+        holdDirection = direction;
+        startTime = Time.time;
+        tap = true;
+    }
+
+    /// <summary>
+    /// Starts the left-movement loop
+    /// </summary>
+    void OnMoveLeft(InputValue value)
+    {
+        if (!(gameManager.gameState == GameState.Pause))
+        {
+            if (value.isPressed)
+            {
+                MoveLeft();
+                StartHold(Direction.Left);
+            }
+            else
+            {
+                moveHold = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Starts the right-movement loop
+    /// </summary>
+    void OnMoveRight(InputValue value)
+    {
+        if (!(gameManager.gameState == GameState.Pause))
+        {
+            if (value.isPressed)
+            {
+                MoveRight();
+                StartHold(Direction.Right);
+            }
+            else
+            {
+                moveHold = false;
+            }
+        }
     }
 
     /// <summary>
     /// Moves the current block to the left
     /// </summary>
-    void OnMoveLeft()
+    void MoveLeft()
     {
-        if (!(gameManager.gameState == GameState.Pause)) currentTetris?.Move(Direction.Left);
+        currentTetris?.Move(Direction.Left);
     }
 
     /// <summary>
     /// Moves the current block to the right
     /// </summary>
-    void OnMoveRight()
+    void MoveRight()
     {
-        if (!(gameManager.gameState == GameState.Pause)) currentTetris?.Move(Direction.Right);
+        currentTetris?.Move(Direction.Right);
     }
 
     /// <summary>

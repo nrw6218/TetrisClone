@@ -11,7 +11,7 @@
                     "id": "626be4e3-e223-4663-89b8-b46249395732",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press(behavior=2)"
                 },
                 {
                     "name": "Move Right",
@@ -19,7 +19,7 @@
                     "id": "e53132b0-7371-4670-ad6e-52ab58e7652c",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press(behavior=2)"
                 },
                 {
                     "name": "Rotate Right",
