@@ -103,6 +103,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: L-Block
       objectReference: {fileID: 0}
+    - target: {fileID: 7276773418259835210, guid: 4737b0f3044c28748b6b817cd2fecd87, type: 3}
+      propertyPath: rotationPoint.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8432653792798648996, guid: 4737b0f3044c28748b6b817cd2fecd87, type: 3}
       propertyPath: m_LocalPosition.y
       value: 1

@@ -170,10 +170,12 @@ public class TetrisBlock : MonoBehaviour
         float angle = 90;
         if (direction == Direction.Right) angle *= -1;
 
-        transform.RotateAround(transform.position + rotationPoint, Vector3.forward, angle);
+        Debug.Log(transform.position);
+        Debug.Log(transform.TransformPoint(rotationPoint));
+        transform.RotateAround(transform.TransformPoint(rotationPoint), transform.forward, angle);
         if (gameManager.GhostEnabled)
         {
-            ghostBlock.transform.RotateAround(ghostBlock.transform.position + rotationPoint, Vector3.forward, angle);
+            ghostBlock.transform.RotateAround((ghostBlock.transform.position + rotationPoint), ghostBlock.transform.forward, angle);
         }
         List<Vector3> adjustmentsMade = new List<Vector3>();
 
