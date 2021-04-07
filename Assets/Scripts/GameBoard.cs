@@ -45,13 +45,12 @@ public class GameBoard : MonoBehaviour
             if (gridVisible)
             {
                 interpolationPeriod = 8;
-                time = 0;
             }
             else
             {
                 interpolationPeriod = Random.Range(30, 40);
-                time = 0;
             }
+            time = 0;
         }
     }
 

@@ -170,10 +170,12 @@ public class TetrisBlock : MonoBehaviour
         float angle = 90;
         if (direction == Direction.Right) angle *= -1;
 
-        transform.Rotate(0, 0, angle);
+        Debug.Log(transform.position);
+        Debug.Log(transform.TransformPoint(rotationPoint));
+        transform.RotateAround(transform.TransformPoint(rotationPoint), transform.forward, angle);
         if (gameManager.GhostEnabled)
         {
-            ghostBlock.transform.Rotate(0, 0, angle);
+            ghostBlock.transform.RotateAround((ghostBlock.transform.position + rotationPoint), ghostBlock.transform.forward, angle);
         }
         List<Vector3> adjustmentsMade = new List<Vector3>();
 
@@ -228,10 +230,10 @@ public class TetrisBlock : MonoBehaviour
                     ghostBlock.transform.localPosition -= adjustment;
                 }
             }
-            transform.Rotate(0, 0, angle * -1f);
+            transform.RotateAround(transform.position + rotationPoint, Vector3.forward, angle * -1f);
             if (gameManager.GhostEnabled)
             {
-                ghostBlock.transform.Rotate(0, 0, angle * -1f);
+                ghostBlock.transform.RotateAround(ghostBlock.transform.position + rotationPoint, Vector3.forward, angle * -1f);
             }
         }
         if (gameManager.GhostEnabled)
