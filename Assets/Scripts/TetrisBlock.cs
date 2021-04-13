@@ -256,7 +256,15 @@ public class TetrisBlock : MonoBehaviour
             int roundedX = Mathf.RoundToInt(transform.localPosition.x + difference.x + move.x);
             int roundedY = Mathf.RoundToInt(transform.localPosition.y + difference.y + move.y);
 
-            if (roundedX < 0 || roundedX >= width || roundedY < 0)
+            if (roundedX < 0)
+            {
+                GameBoard.anim.SetTrigger("Left");
+                return false;
+            } else if (roundedX >= width)
+            {
+                GameBoard.anim.SetTrigger("Right");
+                return false;
+            } else if (roundedY < 0)
             {
                 return false;
             }
