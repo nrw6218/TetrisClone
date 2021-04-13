@@ -22,12 +22,14 @@ public class GameBoard : MonoBehaviour
 
     #region fields
     private static ScoreBoard scoreBoard;
+    public static Animator anim;
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
         scoreBoard = FindObjectOfType<ScoreBoard>();
+        anim = GetComponent<Animator>();
         boardObject = GameObject.FindGameObjectWithTag("Board");
         interpolationPeriod = Random.Range(40, 50);
     }
